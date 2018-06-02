@@ -24,6 +24,7 @@ public class ComputeDegree extends
             vertex.setValue(new IntWritable(degree));
         }else{
             vertex.voteToHalt();
+            System.out.println("Vertex " + vertex.getId() + " computing after it has voted to halt ");
         }
     }
 }
