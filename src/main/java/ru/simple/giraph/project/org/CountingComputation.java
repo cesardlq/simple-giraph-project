@@ -8,14 +8,18 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 
 public class CountingComputation extends BasicComputation<IntWritable, IntWritable, NullWritable, IntWritable>{
-
+	
+	private IntWritable broadcastedValue = new IntWritable(0);
+	
 	@Override
 	public void compute(Vertex<IntWritable, IntWritable, NullWritable> vertex, Iterable<IntWritable> messages)
 			throws IOException {
 		System.out.println("Magic number at superstep " + getSuperstep() + ": " + getBroadcast("magicNumber"));
 		
+		
 		switch ((int) getSuperstep()) {
 			case 0: 
+				broadcastedValue = getBroadcast("magicNumber");
 				vertex.setValue(new IntWritable(1));
 				break;
 			case 1:
@@ -24,10 +28,16 @@ public class CountingComputation extends BasicComputation<IntWritable, IntWritab
 				break;
 			case 2:
 				vertex.setValue(new IntWritable(3));
+				System.out.println("Beforwe aggregating at compute");
+				aggregate("aggregator", vertex.getValue());
+				System.out.println("After aggregating at compute");
 				break;
 			case 3:
 				vertex.voteToHalt();
 				break;
 		}
+		
+		System.out.println("Magic number stored in an attribute at superstep " + getSuperstep() + ": " + broadcastedValue);
+		//aggregate("aggregator", vertex.getValue());
 	}
 }

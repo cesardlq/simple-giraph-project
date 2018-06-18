@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.apache.giraph.master.MasterCompute;
 import org.apache.hadoop.io.IntWritable;
 
-public class SimpleCountingMasterCompute extends MasterCompute {
+public class SwitchedCountingMasterCompute extends MasterCompute {
 
 	public void readFields(DataInput arg0) throws IOException {
 		// TODO Auto-generated method stub
@@ -21,16 +21,24 @@ public class SimpleCountingMasterCompute extends MasterCompute {
 
 	@Override
 	public void compute() {
-		if (getSuperstep() == 0) {
-			//broadcast("magicNumber", null);
-			broadcast("magicNumber", new IntWritable(-1));
+		switch ((int) getSuperstep()) {
+			case 0: 
+				//broadcast("magicNumber", null);
+				broadcast("magicNumber", new IntWritable(-1));
+				setComputation(OneCountingComputation.class);
+				break;
+			case 1:
+				setComputation(TwoCountingComputation.class);
+				break;
+			case 2:
+				setComputation(ThreeCountingComputation.class);
+				break;
 		}
 	}
 
 	@Override
 	public void initialize() throws InstantiationException, IllegalAccessException {
 		//broadcast("magicNumber", new IntWritable(-1));
-		registerAggregator("aggregator", SumiAggregator.class);
 		
 	}
 
