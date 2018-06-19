@@ -10,15 +10,17 @@ import org.apache.hadoop.io.IntWritable;;
 public class SumiAggregator extends BasicAggregator<IntWritable> {
 
 	public void aggregate(IntWritable value) {
-		System.out.println("aggregating");
+		System.out.println("Aggregating " + value + " into " + getAggregatedValue());
 		IntWritable sum = new IntWritable(value.get() + getAggregatedValue().get());
 		setAggregatedValue(sum);
+		System.out.println("Aggregated value: " + getAggregatedValue());
+		
 		
 	}
 
 	public IntWritable createInitialValue() {
 		System.out.println("Initializing aggregator");
-		return new IntWritable(0);
+		return new IntWritable(1);
 	}
 
 

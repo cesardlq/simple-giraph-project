@@ -14,7 +14,7 @@ public class CountingComputation extends BasicComputation<IntWritable, IntWritab
 	@Override
 	public void compute(Vertex<IntWritable, IntWritable, NullWritable> vertex, Iterable<IntWritable> messages)
 			throws IOException {
-		System.out.println("Magic number at superstep " + getSuperstep() + ": " + getBroadcast("magicNumber"));
+		System.out.println("Broadcasted value at superstep " + getSuperstep() + " in vertex " + vertex.getId() + ": " + getBroadcast("magicNumber"));
 		
 		
 		switch ((int) getSuperstep()) {
@@ -23,12 +23,12 @@ public class CountingComputation extends BasicComputation<IntWritable, IntWritab
 				vertex.setValue(new IntWritable(1));
 				break;
 			case 1:
-				System.out.println("Fake magic number at superstep " + getSuperstep() + ": " + getBroadcast("fakeMagicNumber"));
+//				System.out.println("Fake magic number at superstep " + getSuperstep() + ": " + getBroadcast("fakeMagicNumber"));
 				vertex.setValue(new IntWritable(2));
 				break;
 			case 2:
 				vertex.setValue(new IntWritable(3));
-				System.out.println("Beforwe aggregating at compute");
+				System.out.println("Before aggregating at compute");
 				aggregate("aggregator", vertex.getValue());
 				System.out.println("After aggregating at compute");
 				break;
@@ -37,7 +37,7 @@ public class CountingComputation extends BasicComputation<IntWritable, IntWritab
 				break;
 		}
 		
-		System.out.println("Magic number stored in an attribute at superstep " + getSuperstep() + ": " + broadcastedValue);
+		System.out.println("Broadcasted value stored in an attribute at superstep " + getSuperstep() + ": " + broadcastedValue);
 		//aggregate("aggregator", vertex.getValue());
 	}
 }

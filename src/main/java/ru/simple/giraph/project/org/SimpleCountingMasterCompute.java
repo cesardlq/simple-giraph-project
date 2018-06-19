@@ -21,6 +21,8 @@ public class SimpleCountingMasterCompute extends MasterCompute {
 
 	@Override
 	public void compute() {
+		System.out.println("\n\n Superstep: " + getSuperstep());
+		System.out.println("Aggregated value: " + getAggregatedValue("aggregator"));
 		if (getSuperstep() == 0) {
 			//broadcast("magicNumber", null);
 			broadcast("magicNumber", new IntWritable(-1));
@@ -30,7 +32,7 @@ public class SimpleCountingMasterCompute extends MasterCompute {
 	@Override
 	public void initialize() throws InstantiationException, IllegalAccessException {
 		//broadcast("magicNumber", new IntWritable(-1));
-		registerAggregator("aggregator", SumiAggregator.class);
+		registerPersistentAggregator("aggregator", SumiAggregator.class);
 		
 	}
 
