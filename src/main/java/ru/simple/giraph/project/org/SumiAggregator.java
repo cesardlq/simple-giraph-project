@@ -21,7 +21,7 @@ public class SumiAggregator extends BasicAggregator<IntWritable> {
 
 	public IntWritable createInitialValue() {
 		System.out.println("Object " + hashCode() + ". Initializing aggregator." + " Aggregated value: " + getAggregatedValue());
-		return new IntWritable(1);
+		return new IntWritable(0);
 	}
 
 
